@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Stock Savvy</title>
+    <style>
+        body {
+            background: #000;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            animation: EaseIn-page 0.5s forwards;
+    }
+    .navbar {
+        background-color: #333;
+        overflow: hidden;
+    }
+    .navbar a {
+        float: left;
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 20px;
+        text-decoration: none;
+    }
+    .settings-wheel{
+        margin-left: 79.4%;
+        margin-top: -5px;
+        position: relative;
+        transform: rotate(180deg);
+    }
+    .navbar a:hover {
+        color: rgb(230, 134, 45);
+    }
+    .content {
+        padding: 20px;
+    }
+    .heading{
+        font-size: 600%;
+        color: white;
+        cursor:default;
+        
+    }
+    .heading-2{
+        margin-top: -40px;
+        display: flex;
+        font-size: 1000%;
+        color: rgb(89, 88, 88);
+        cursor:default;
+        
+    }
+    .h1-highlightedtext{
+        color: rgb(31, 194, 31);
+        animation: slideInEaseIn 1s forwards;
+        opacity: 0;
+        display: inline-block;
+        margin-top: 100px;
+        margin-left: 340px;
+        text-shadow: 1px 4px 7px rgba(0, 0, 0, 0.414);
+    }
+    @keyframes slideInEaseIn {
+        0% {
+            transform: translateY(50px);
+            opacity: 0;
+        }
+        100% {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+    @keyframes EaseIn-page {
+        0% {
+            transform: translateY(10px);
+            opacity: 0;
+        }
+        100% {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+    .container-body{
+        overflow-x: auto; /* Enable horizontal scrolling */
+        white-space: nowrap;
+        height: 460px;
+        margin-top: 10%;
+        padding-left: 30px;
+    }
+    .container-body a{
+        display: inline-block; /* Display navbar items horizontally */
+        color: white;
+        text-decoration: none;
+        background-color: #929292;
+        height: 419px;
+        width: 336px;
+        border-radius: 7%;
+        margin-inline-start:120px;
+        overflow: hidden;
+    }
+    .container-1{
+        background-image: url('/static/container-1img.jpg');
+    }
+    .container-2{
+        background-image: url('/static/container2.jpeg');
+    }
+    .container-3{
+        background-image: url('/static/currency.jpeg');
+        background-size: 520px;
+        background-position:-110px -100px ;
+
+    }
+    .content-1, .content-2, .content-3{
+        border: 0px solid black;
+        background: rgb(63, 63, 63);
+        margin-top: 72%;
+        height: 180px;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.599);
+    }
+    .container-1,.container-2,.container-3{
+        font-family:sans-serif;
+        font-size: large;
+        font-display: swap;
+        box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.387);
+    }
+    #portfolio,#updates,#currency{
+        font-family: sans-serif;
+        font-weight: 1;
+        margin: 20px;
+        font-weight:500;
+    }
+    #moneycontrol-toggle,#bitcoin-toggle,#stock-toggle{
+        font-size: 20px;
+        margin-left: 23px;
+        color: rgb(74, 138, 74);
+        margin-top: -10px;
+        text-shadow: none;
+    }
+    .footer {
+        color: white;
+        border: 0px solid white;
+        margin: 0; /* Remove margin */
+        margin-left: -20px;
+        margin-top: 256px;
+        padding: 0; /* Remove padding */
+        height: 400px;
+        width: 1670px;
+        background: rgba(47, 47, 47, 0.407);
+        margin-bottom: -100px;
+    }
+    
+    .footer a {
+        list-style: none;
+        font-style: none;
+        text-decoration: none;
+        color: white;
+        display: flex;
+        padding-top: 22px;
+        padding-left: 10px;
+        padding-bottom: 10px;
+        box-shadow: 0px 1px 0px 0px rgb(153, 102, 84);
+    }
+    
+    .footer-con-1{
+        display: flex;
+        padding-top: 42px;
+    }
+    .footer a:hover{
+        background:rgba(54, 54, 54, 0.242);;
+        box-shadow: 0px 1.3px 0px 0px rgb(239, 109, 61);
+    }
+    @media only screen and (max-width: 600px) {
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            animation: EaseIn-page 0.5s forwards;
+        }
+        .navbar {
+            background-color: #333;
+            overflow: hidden;
+        }
+        .navbar a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+        }
+        .navbar a:hover {
+            background: rgba(0, 0, 0, 0);
+            color: rgb(75, 157, 31);
+        }
+        .settings-wheel{
+            margin-left: 17%;
+            position: relative;
+        }
+        .h1-highlightedtext{
+            margin-top: 49px;
+            margin-left: -9px;
+            font-size: 56px;
+        }
+        .container-body{
+            margin-top: 100px;
+            margin-bottom: -10px;
+            margin-left: -60px;
+            margin-right: -20px;
+        }
+        .container-body a{
+            width: 187px;
+            height: 266px;
+            margin-top: 1020px;
+            margin-bottom: -100px;
+            margin-left: -10px;
+            padding: 0;
+            border-radius: 20px;
+            margin:27px;
+        }
+        .container-1{
+            background-image: url(container-1img.jpeg);
+            background-size: 200px;
+        }
+        .container-2{
+            background-image: url(container2.jpeg);
+            background-size: 300px;
+        }
+        .container-3{
+            background-image: url(currency.jpeg);
+            background-size: 440px;
+            background-position:-110px -100px ;
+    
+        }
+        #portfolio,#updates,#currency{
+            font-family: sans-serif;
+            font-size: 22px;
+            margin: 20px;
+            margin-top: 10px;
+            color: rgba(255, 255, 255, 0.883);
+            font-weight:normal;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.325);
+        }
+        #moneycontrol-toggle,#bitcoin-toggle,#stock-toggle{
+            font-size: 16px;
+            margin-left: 22px;
+            color: rgb(74, 138, 74);
+            margin-top: -20px;
+            text-shadow: none;
+        }
+        .footer{
+            color:white;
+            border: 0px solid white ;
+            margin: 0;
+            padding: 0;
+            height:256px;
+            width: 109.2%;
+            margin-bottom: -100px;
+            margin-left: -10px;
+            background: rgba(47, 47, 47, 0.407);
+        }
+        .footer a{
+            list-style: none;
+            font-style: none;
+            text-decoration: none;
+            color: white;
+            display: flex;
+            padding-top: 12px;
+            padding-left: 7px;
+            padding-bottom: 7px;
+            box-shadow: 0px 1px 0px 0px rgb(153, 102, 84);
+        }
+    }
+    @media only screen and (max-width: 414px) {
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            animation: EaseIn-page 0.5s forwards;
+        }
+        .navbar {
+            background-color: #333;
+            overflow: hidden;
+        }
+        .navbar a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+        }
+        .navbar a:hover {
+            background: rgba(0, 0, 0, 0);
+            color: rgb(75, 157, 31);
+        }
+        .settings-wheel{
+            position: absolute;
+            margin-top: -3.3px;
+            margin-top: -4px;
+            margin-left: 350px;
+        }
+        .h1-highlightedtext{
+            margin-top: 49px;
+            margin-left: -9px;
+            font-size: 56px;
+        }
+        .container-body{
+            margin-top: 100px;
+            margin-bottom: -10px;
+            margin-left: -60px;
+            margin-right: -20px;
+        }
+        .container-body a{
+            width: 187px;
+            height: 266px;
+            margin-top: 1020px;
+            margin-bottom: -100px;
+            margin-left: -10px;
+            padding: 0;
+            border-radius: 20px;
+            margin:27px;
+        }
+        .container-1{
+            background-image: url('../static/container-1img.jpg');
+            background-size: 200px;
+        }
+        .container-2{
+            background-image: url(container2.jpeg);
+            background-size: 300px;
+        }
+        .container-3{
+            background-image: url(currency.jpeg);
+            background-size: 440px;
+            background-position:-110px -100px ;
+    
+        }
+        #portfolio,#updates,#currency{
+            font-family: sans-serif;
+            font-size: 22px;
+            margin: 20px;
+            margin-top: 10px;
+            color: rgba(255, 255, 255, 0.883);
+            font-weight:normal;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.325);
+        }
+        #moneycontrol-toggle,#bitcoin-toggle,#stock-toggle{
+            font-size: 16px;
+            margin-left: 22px;
+            color: rgb(74, 138, 74);
+            margin-top: -20px;
+            text-shadow: none;
+        }
+        .footer{
+            color:white;
+            border: 0px solid white ;
+            margin: 0;
+            padding: 0;
+            height:256px;
+            width: 109.2%;
+            margin-bottom: -100px;
+            margin-left: -20px;
+            margin-right: -20px;
+            background: rgba(47, 47, 47, 0.407);
+        }
+        .footer a{
+            list-style: none;
+            font-style: none;
+            text-decoration: none;
+            color: white;
+            display: flex;
+            padding-top: 12px;
+            padding-left: 7px;
+            padding-bottom: 7px;
+            box-shadow: 0px 1px 0px 0px rgb(153, 102, 84);
+        }
+    }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <a href="" class="active" onclick="openhome()">Home</a>
+    <a href="#">About</a>
+    <a href="#" onclick="oepncontact()">Contact</a>
+    <a href="#" class="settings-wheel" onclick="openhomelight()"><img src="theme.png" width="17" alt=""></a>
+</div>
+
+<div class="content">
+    <h1 class="heading-2"><span class="h1-highlightedtext">Stock Savvy.</span></h1>
+    <div class="container-body">
+        <a href="" class="container-1" onclick="openstock_details()">
+            <div class="content-1">
+                <h1 id="portfolio">Portfolio</h1>
+                <h2 id="stock-toggle">stock</h2>
+            </div>
+        </a>
+        <a href="https://www.moneycontrol.com" class="container-2">
+            <div class="content-2">
+                <h1 id="updates">Updates</h1>
+                <h2 id="moneycontrol-toggle">moneycontrol</h2>
+            </div>
+        </a>
+        <a href="https://www.google.com/finance/quote/BTC-INR?" class="container-3">
+            <div class="content-3">
+                <h1 id="currency">Currency</h1>
+                <h2 id="bitcoin-toggle">Bitcoin</h2>
+            </div>
+        </a>
+    </div>
+    <footer>
+        <div class="footer">
+            <a href="" class=""></a>
+            <a href=""></a>
+            <a href=""></a>
+            <a href=""></a>
+        </div>
+    </footer>
+<script>
+    function returnToHomePage() {
+        window.location.href = "/welcompage";
+    }
+    function openhome() {
+        window.open("/welcompage", "_blank"); 
+    }
+    function openstock_details() {
+        window.open("/stock_details", "_blank"); 
+    }
+    function oepncontact() {
+        window.open("/contact", "_blank"); 
+    }
+</script>
+</div>
+</div>
+</body>
+</html>
