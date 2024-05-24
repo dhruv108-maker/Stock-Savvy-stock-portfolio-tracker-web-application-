@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body{
+            background:black;
+            margin: 0;
+            padding: 0;
+        }
+        #logo{
+            float: inline-start;
+            position: absolute;
+            margin-top: 5px;
+            margin-inline-start:-1px;
+        }
+        .navbar {
+            background-color: #121212;
+            overflow: hidden;
+            width: 100%;
+            z-index: 999;
+            position: fixed;
+        }
+        .navbar a {
+            margin-inline:10px;
+            float: left;
+            display: flex;
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+            font-family: sans-serif;
+        }
+        .navbar a:hover {
+            color: rgb(230, 134, 45);
+        }
+        
+        #home{
+            margin-left:120px;
+        }
+        .sigin{
+            
+        }
+        .login{
+            margin-inline-start: 5px;
+        }
+
+        .navbar a:hover {
+            background: linear-gradient(100deg, #5fbcb4,#cbd3c5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .bg-img{
+            width: 100%;
+            border: 0px solid black;
+            height: 420px;
+            background-image: url("{{ url_for('static', filename='images/bg102.jpg') }}");
+            background-size:fill;
+            background-position-y: -50px;
+            background-position-x: 100px;
+            background-repeat: no-repeat;
+            z-index:-1000px;
+            opacity: 1.5;
+        }
+        h1{
+            margin-top: 90px;
+            margin-inline-start: 20px;
+            font-family: sans-serif;
+            font-size: 80px;
+            position: absolute;
+            background: linear-gradient(175deg,rgb(213, 213, 213),#989898 );
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        h1:hover{
+            cursor:default;
+        }
+        h2{ margin-inline-start: 20px;
+            font-family: sans-serif;
+            font-size: 80px;
+            margin-top: 190px;
+            position: absolute;
+            background: linear-gradient(175deg,rgb(233, 233, 233),#777777 );
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        h2:hover{
+            cursor:default;
+        }
+        .main-body{
+            border: 0px solid white;
+            background: #000000;
+            height: 1024px;
+            display: flex;
+        }
+        .content {
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            white-space: nowrap;
+            width: 110%;
+            margin-top: 128px;
+            margin-inline-start: -100px;
+        }        
+        .content ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: inline-block;
+        }
+        .content li {
+            display: inline-block;
+            padding: 10px;
+            border-radius: 10px;
+            width: 330px;
+            height: 128px;
+            margin-top: 10px;
+            background-color: #f0f0f000;
+            margin-inline-start: 256px;
+            font-family: sans-serif;
+            margin-bottom: -20px;
+            background: linear-gradient(135deg, #c3c3c3, rgba(100, 104, 105, 0.703));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            padding: 40px;
+            font-size: 30px;
+            font-weight: bolder;
+            transition:  0.5s ease;
+            box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.237);
+            animation: rotate-shadow 5s linear infinite;
+        }
+        .content li:hover{
+            border-radius: 20px;
+            transition: 2s;
+            margin-bottom: -20px;
+            font-size: 28px;
+            cursor: pointer;
+        }
+        .portfolio-toggle{
+            position: relative;
+        }
+        #c-h-1{
+            background: linear-gradient(100deg, #5fbcb4,#a9c793);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 22px;
+        }
+        .content li:hover #c-h-1{
+            font-size: 26px;
+            transition: 0.7s ease-in-out;
+            margin-top: 15px;
+        }
+        .username{
+            margin-left: 939px;
+        }
+        .signin-button {
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+        .signin-button:hover {
+            background-color: #45a049;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 90%;
+            overflow: hidden;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #1b1b1b;
+            margin: 15% auto;
+            padding: 20px;
+            border: 0px solid #888;
+            width: 25%;
+            border: 0px solid orange;
+            max-width: 500px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+            animation: slidein 0.5s forwards;
+            animation: rotate-shadow-signinModa 10s linear infinite;
+            color:white;
+            font-family:sans-serif;
+
+        }
+
+        .close-button {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            opacity:0.5;
+            margin-top:-10px;
+            margin-right:-5px;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: red;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            background-color: #000000;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 0px solid #ccc;
+            border-radius: 5px;
+            transition: background-color 0.3s, box-shadow 0.3s;
+            animation: rotate-shadow 10s linear infinite
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            background-color: black;
+            color: white;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+            outline: none;
+        }
+
+        input[type="submit"] {
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+
+        @keyframes slidein {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes rotate-shadow {
+            0% {
+                box-shadow: 3px 3px 5px rgba(217, 255, 252, 0.5);
+            }
+            12.5% {
+                box-shadow: 0px 3px 5px rgba(217, 255, 252, 0.5);
+            }
+            25% {
+                box-shadow: -3px 3px 5px rgba(217, 255, 252, 0.5);
+            }
+            37.5% {
+                box-shadow: -3px 0px 5px rgba(217, 255, 252, 0.5);
+            }
+            50% {
+                box-shadow: -3px -3px 5px rgba(217, 255, 252, 0.5);
+            }
+            62.5% {
+                box-shadow: 0px -3px 5px rgba(217, 255, 252, 0.5);
+            }
+            75% {
+                box-shadow: 3px -3px 5px rgba(217, 255, 252, 0.5);
+            }
+            87.5% {
+                box-shadow: 3px 0px 5px rgba(217, 255, 252, 0.5);
+            }
+            100% {
+                box-shadow: 3px 3px 5px rgba(217, 255, 252, 0.5);
+            }
+        }
+        @keyframes rotate-shadow-signinModal{
+            0% {
+                box-shadow: 3px 3px 5px rgba(34, 243, 191, 0.5);
+            }
+            12.5% {
+                box-shadow: 0px 3px 5px rgba(34, 243, 191, 0.5);
+            }
+            25% {
+                box-shadow: -3px 3px 5px rgba(34, 243, 191, 0.5);
+            }
+            37.5% {
+                box-shadow: -3px 0px 5px rgba(34, 243, 191, 0.5);
+            }
+            50% {
+                box-shadow: -3px -3px 5px rgba(34, 243, 191, 0.5);
+            }
+            62.5% {
+                box-shadow: 0px -3px 5px rgba(34, 243, 191, 0.5)
+            }
+            75% {
+                box-shadow: 3px -3px 5px rgba(34, 243, 191, 0.5);
+            }
+            87.5% {
+                box-shadow: 3px 0px 5px rgba(34, 243, 191, 0.5);
+            }
+            100% {
+                box-shadow: 3px 3px 5px rgba(34, 243, 191, 0.5);
+            }
+        }
+ 
+    </style>
+</head>
+<div class="navbar">
+    <a href="index.html" id="logo" onclick="goToHomePage()"><img src="{{ url_for('static', filename='images/Stock Savvy.png') }}" width="80px" alt=""></a>
+    <a href="#" class="active" onclick="goToHomePage()" id="home">Home</a>
+    <a href="#">About</a>
+    <a href="#" onclick="opencontact()">Contact</a>
+    <a href="#"><div class="sigin" onclick="toggleModal() ">Signin</div></a>
+    <a href="#"><div class="username">{{name}}</div></a>
+</div>
+<div id="signinModal" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span class="close-button" onclick="toggleModal()">&times;</span>
+        <form action="/submit" method="post">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required><br>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required><br>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required><br>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+</div>
+<div class="bg-img">
+    <h1>Stay Ahead of</h1><h2>the <span id="curve">Curve</span>.</h2>
+</div>
+<div class="main-body">
+    <div id="greeting" style="display: none;"></div>
+<nav class="content">
+    <!-- "{{ url_for('static', filename='images/ssbg2.jpg') }}" -->
+        <li id="c1" onclick="portfolio()">Portfolio
+            <p id="c-h-1">Track your stock</p>
+        </li>
+        <li id="c2">Track Currency
+            <p id="c-h-1">Track your currency</p>
+        </li>
+        <li id="c3">Money Control
+            <p id="c-h-1">Stay Updated about current</p>
+        </li>
+</nav>
+</div>
+<body>
+    <script>
+        
+        function goToHomePage() {
+            window.location.href = "/";
+        }
+
+        function portfolio() {
+            window.open("/index2", "_blank"); 
+        }
+
+        function toggleModal() {
+            var modal = document.getElementById("signinModal");
+            if (modal.style.display === "block") {
+                modal.style.display = "none";
+            } else {
+                modal.style.display = "block";
+            }
+        }
+
+        function closeModal() {
+            document.getElementById("signinModal").style.display = "none";
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const userForm = document.getElementById('userForm');
+            const greeting = document.getElementById('greeting');
+        
+            userForm.addEventListener('submit', function (event) {
+                event.preventDefault();
+                const formData = new FormData(userForm);
+                const name = formData.get('name');
+                greeting.textContent = `Hello, ${name}!`;
+                greeting.style.display = 'block';
+                userForm.reset();
+            });
+        });
+    </script>
+</body>
+</html>

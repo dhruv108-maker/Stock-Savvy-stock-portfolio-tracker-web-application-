@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Plotter</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background: black;
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+        #logo{
+            float: inline-start;
+            position: absolute;
+            margin-top: 5px;
+            margin-inline-start:-1px;
+        }
+        .navbar {
+            background-color: #121212;
+            overflow: hidden;
+            width: 100%;
+            z-index: 999;
+        }
+        .navbar a {
+            margin-inline:10px;
+            float: left;
+            display: flex;
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+            font-family: sans-serif;
+        }
+        .navbar a:hover {
+            color: rgb(230, 134, 45);
+        }
+        #plotDiv {
+            width: 70%;
+            height: 65%;
+            margin-left: 25%;
+            margin-top: 10%;
+            position: absolute;
+        }
+        .side-bar {
+            border-top-right-radius:1px ;
+            border-bottom-right-radius:1px ;
+            width: 15%;
+            height: 130vh;
+            float: left;
+            padding: 30px;
+            background: rgb(60, 60, 60, 0.6);
+            position: absolute;
+            transition: left 0.3s ease;
+            left: -310px;
+        }
+        .side-bar li{
+            list-style: none;
+            box-shadow: 0px 2px 0px 0px rgb(114, 114, 114, 0.3);
+            width: 110%;
+            padding: 11px;
+            padding-top: 10%;
+            margin-inline-start: -30px;
+            font-family: sans-serif;
+        }
+        .side-bar li:hover{
+            box-shadow: 0px 2px 0px 0px rgb(255, 170, 67, 0.5);
+            transition: linear 0.2s;
+        }
+        .side-bar.open {
+            left: 0;
+        }
+        #menu-toggle {
+            float: left;
+            font-size: 35px;
+            margin-top: -10px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        #menu-toggle.rotate {
+            transform: rotate(360deg);
+        }
+        #stockForm {
+            background-color: #ffffff00;
+            border-radius: 8px;
+            width: 250px;
+            padding-inline: 20px;
+            margin-inline-start: -15px;
+            text-align: center;
+            display: flex;
+        }
+        #symbolInput {
+            width: 150px;
+            padding: 10px;
+            margin-bottom: 10px;
+            background: #000;
+            border-radius: 4px;
+            border:0px solid black;
+            font-size: 16px;
+            border-top-right-radius:0px ;
+            border-bottom-right-radius:0px ;
+            color:white;
+        }
+        #symbolInput:focus {
+            border-color: #007bff;
+            outline: none;
+            color:white;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
+        }
+        button[type="submit"] {
+            background-color: #0066b3;
+            color: white;
+            padding-inline: 10px;
+            height: 38.1px;
+            border: 0px solid #0066b3;
+            width: 150px;
+            margin-top: 0.5px;
+            border-top-right-radius:7px ;
+            border-bottom-right-radius:7px ;
+            cursor: pointer;
+        }
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        #stockName{
+            font-family: sans-serif;
+            font-size: 60px;
+            margin-left:2%;
+            transition: margin-left 0.3s ease;
+            background: linear-gradient(175deg,rgb(233, 233, 233),#777777,#777777 );
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        #plotDiv{
+            font-family: sans-serif;
+            margin-left:-10%;
+            margin-top:0.5%;
+            transition: margin-left 0.3s ease;
+            width:90%;
+        }
+        .navbar {
+            background-color: #1d1d1d;
+            overflow: hidden;
+            height: 50px;
+        }
+        .navbar a {
+            float: right;
+            display: flex;
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+            font-family: sans-serif;
+        }
+        .navbar a:hover {
+            color: rgb(230, 134, 45);
+        }
+        #menu-toggle{
+            margin-top: 1px;
+        }
+        #latest_price{
+            font-family: sans-serif;
+            font-size: 20px;
+            border:1px solid white;
+            width:25%;
+            height:100px;
+            
+        }
+        #details-1{
+            border:1px solid white;
+            width:25%;
+            height:100px;
+            margin-top:-101px;
+            transition: linear 0.1s;
+            margin-inline-start:480px;
+        }
+        @keyframes rotate-shadow {
+            0% {
+                box-shadow: 3px 3px 5px rgba(128, 128, 128, 0.5);
+            }
+            12.5% {
+                box-shadow: 0px 3px 5px rgba(128, 128, 128, 0.5);
+            }
+            25% {
+                box-shadow: -3px 3px 5px rgba(128, 128, 128, 0.5);
+            }
+            37.5% {
+                box-shadow: -3px 0px 5px rgba(128, 128, 128, 0.5);
+            }
+            50% {
+                box-shadow: -3px -3px 5px rgba(128, 128, 128, 0.5);
+            }
+            62.5% {
+                box-shadow: 0px -3px 5px rgba(128, 128, 128, 0.5);
+            }
+            75% {
+                box-shadow: 3px -3px 5px rgba(128, 128, 128, 0.5);
+            }
+            87.5% {
+                box-shadow: 3px 0px 5px rgba(128, 128, 128, 0.5);
+            }
+            100% {
+                box-shadow: 3px 3px 5px rgba(128, 128, 128, 0.5);
+            }
+        }
+        #symbolList{
+            margin-inline-start:-30px;
+            width:100%;
+            background: linear-gradient(100deg, #c8c8c8,#787878);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .stock-details{
+            margin-top:36%;
+            display: inline-flex;
+            font-family:sans-serif;
+            transition: linear 0.3s;
+            position: absolute;
+            
+        }
+        .stock-details a{
+            text-decoration: none;
+            font-size:20px;
+            padding:20px;
+            margin-inline-start: 280px;
+            background: linear-gradient(100deg, #c8c8c8,#787878);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .stock-details2{
+            margin-top:47%;
+            display: inline-flex;
+            font-family:sans-serif;
+            transition: linear 0.3s;
+            position: absolute;
+            
+        }
+        .stock-details2 a{
+            text-decoration: none;
+            font-size:20px;
+            padding:20px;
+            margin-inline-start: 280px;
+            background: linear-gradient(100deg, #c8c8c8,#787878);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        #search{
+            float:left;
+            margin-left:-35px;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="#" id="menu-toggle"><img src="{{ url_for('static', filename='images/search.svg') }}" alt="#"></a>
+        <a href="#" id="search">Search</a>
+        <a href="#" onclick="opencontact()">Contact</a>
+        <a href="#">About</a>
+        <a href="#" class="active" onclick="goToHomePage()">Home</a>
+        <a href="#" class="settings-wheel" onclick="openhomelight()"><img src="theme.png" width="17" alt=""></a>
+    </div>
+    
+    <div class="side-bar" id="side-bar">
+        <form id="stockForm">
+            <label for="symbol"></label>
+            <input type="text" id="symbolInput" placeholder="Enter stock name" required>
+            <button type="submit">Get Data</button>
+        </form>
+        <ul id="symbolList">
+            <li>AAPL</li>
+            <li>GOOG</li>
+            <li>NKE</li>
+            <li>DIS</li>
+            <li>SBUX</li>
+            <li>DMART.NS</li>
+            <li>MSFT</li>
+            <li>TSLA</li>
+            <li>AMZN</li>
+            <li>FB</li>
+            <li>JPM</li>
+            <li>V</li>
+            <li>JNJ</li>
+            <li>WMT</li>
+            <li>PFE</li>
+            <li>BABA</li>
+            <li>INTC</li>
+            <li>CSCO</li>
+        </ul>
+    </div>
+    <h1 id="stockName">Stock</h1>
+    <div id="plotDiv"></div>
+    <div class="stock-details" id="stock-details">
+        <a href="#" id="price-details"><h1 id="price-h1">Price</h1><div id="latestPriceDiv"></div></a>
+        <a href="#" id="pe-details"><h1 id="pe-h1">P/E Ratio</h1><div id="peDiv"></div></a>
+    </div>
+    <div class="stock-details2" id="stock-details2">
+        <a href="#" id="price-details"><h1 id="price-h1">Open</h1><div id="open_price"></div></a>
+        <a href="#" id="h-details"><h1 id="hight-h1">High</h1><div id="highest_priceDiv"></div></a>
+    </div>
+    <script>
+
+        function goToHomePage() {
+            window.location.href = "/";
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const symbolInput = document.getElementById('symbolInput');
+            const symbolList = document.getElementById('symbolList').getElementsByTagName('li');
+            
+            // Function to set input value when list item is clicked
+            function setSymbolInputValue(event) {
+                const clickedSymbol = event.target.textContent;
+                symbolInput.value = clickedSymbol;
+            }
+            
+            // Add click event listener to each list item
+            for (let i = 0; i < symbolList.length; i++) {
+                symbolList[i].addEventListener('click', setSymbolInputValue);
+            }
+        });
+
+        document.getElementById("stockForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent the default form submission behavior
+            // Get the value entered in the input field
+            var symbol = document.getElementById("symbolInput").value;
+            // Update the content of the <h1> element with the entered symbol
+            document.getElementById("stockName").innerText = symbol;
+        });
+        
+        document.getElementById('stockForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            plotStock();
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.getElementById('menu-toggle');
+            const sideBar = document.getElementById('side-bar');
+            const heading2 = document.getElementById('stockName');
+            const graph = document.getElementById('plotDiv');
+            const toggle = document.getElementById('menu-toggle');
+            const details = document.getElementById('stock-details');
+            const details2 = document.getElementById('stock-details2');
+
+            menuToggle.addEventListener('click', function(event) {
+                event.preventDefault();
+                sideBar.classList.toggle('open');
+                menuToggle.classList.toggle('rotate');
+
+                if (sideBar.classList.contains('open')) {
+                    details.style.marginLeft = '20%'
+                    details2.style.marginLeft = '20%'
+                    heading2.style.marginLeft = '20%';
+                    graph.style.marginLeft = '20%';
+                    graph.style.width = '80%';
+                    toggle.style.color='orange';
+                    
+                } else {
+                    details.style.marginLeft = '10%';
+                    details2.style.marginLeft = '10%';
+                    heading2.style.marginLeft = '3%';
+                    graph.style.marginLeft = '10%';
+                    graph.style.width = '80%';
+                    toggle.style.color='white';
+                }
+            });
+        });
+
+        function plotStock() {
+            var symbol = document.getElementById('symbolInput').value.toUpperCase();
+            fetch('/plot?symbol=' + symbol)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        var latestPrice = data.latest_price;
+                        console.log("Latest price:", latestPrice);
+                        var latestPriceDiv = document.getElementById('latestPriceDiv');
+                        latestPriceDiv.textContent = 'Latest Price: INR ' + latestPrice;
+                        latestPriceDiv.classList.add('active');
+                        var dates = data.dates;
+                        var prices = data.prices;
+
+                        var peRatio = data.pe;
+                        console.log("P/E Ratio:", peRatio);
+                        var peDiv = document.getElementById('peDiv');
+                        peDiv.textContent = "P/E Ratio: " + peRatio;
+                        peDiv.classList.add('active');
+                        
+                        var highest_price = data.highest_price;
+                        console.log("Highest Price:", highest_price);
+                        var highest_priceDiv = document.getElementById('highest_priceDiv');
+                        highest_priceDiv.textContent = "High: INR " + highest_price;
+                        highest_priceDiv.classList.add('active');
+                        highest_priceDiv.style.marginLeft = "100px";
+                        var h_heading=document.getElementById('hight-h1')
+                        highest_priceDiv.style.marginLeft = "100px";
+                        h_heading.style.marginLeft = "100px";
+
+                        var open_price = data.open_price;
+                        console.log("Open:", open_price);
+                        var peDiv = document.getElementById('open_price');
+                        peDiv.textContent = "Open: " + open_price;
+                        peDiv.classList.add('active');
+
+                        var dates = data.dates;
+                        var prices = data.prices;
+                        var layout = {
+                            title: '',
+                            xaxis: {
+                                title: 'Date',
+                                tickformat: '%Y-%m-%d'
+                            },
+                            yaxis: {
+                                title: 'Price',
+                                tickprefix: '$'
+                            },
+                            font: {
+                                family: 'Arial, sans-serif',
+                                size: 16,
+                                color: 'white 0.9'
+                            },
+                            plot_bgcolor: 'black',
+                            paper_bgcolor: 'black '
+                        };
+                        var trace = {
+                            x: dates,
+                            y: prices,
+                            type: 'scatter',
+                            mode: 'lines',
+                            line: {
+                                color: 'rgb(10, 255, 100,1)',
+                                width: 1
+                            }
+                        };
+                        Plotly.newPlot('plotDiv', [trace], layout);
+                    } else {
+                        alert(data.error);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function fetchLatestPrice() {
+            fetch('/get-latest-price') // Fetch data from Flask endpoint
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Update the content of the latestPrice div with the latest price
+                        document.getElementById('latestPrice').innerText = 'Latest Price: $' + data.latest_price;
+                    } else {
+                        console.error('Error fetching latest price:', data.error);
+                    }
+                })
+                .catch(error => console.error('Error fetching latest price:', error));
+        }
+
+        // Call the fetchLatestPrice function when the page loads
+        window.addEventListener('load', fetchLatestPrice);
+    </script>
+</body>
+</html>
