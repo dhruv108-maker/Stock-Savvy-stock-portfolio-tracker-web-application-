@@ -57,13 +57,13 @@
             width: 100%;
             border: 0px solid black;
             height: 420px;
-            background-image: url("{{ url_for('static', filename='images/bg102.jpg') }}");
+            background-image: url("{{ url_for('static', filename='images/bg.jpg') }}");
             background-size:fill;
             background-position-y: -50px;
             background-position-x: 100px;
             background-repeat: no-repeat;
             z-index:-1000px;
-            opacity: 1.5;
+            opacity: 1;
         }
         h1{
             margin-top: 90px;
@@ -92,7 +92,7 @@
         }
         .main-body{
             border: 0px solid white;
-            background: #000000;
+            background: #010101;
             height: 1024px;
             display: flex;
         }
@@ -101,14 +101,21 @@
             scroll-behavior: smooth;
             white-space: nowrap;
             width: 110%;
+            background: #69696900;
+            height: 23%;
             margin-top: 128px;
             margin-inline-start: -100px;
+            padding-inline-end: 200px;
+            scroll-behavior: smooth;
+            scrollbar-width:thin;
+            scrollbar-color: #42d3b100 #f1f1f100;
         }        
         .content ul {
             list-style-type: none;
             padding: 0;
             margin: 0;
             display: inline-block;
+           
         }
         .content li {
             display: inline-block;
@@ -117,26 +124,29 @@
             width: 330px;
             height: 128px;
             margin-top: 10px;
-            background-color: #f0f0f000;
-            margin-inline-start: 256px;
+            background-color: #7070701f;
+            margin-inline-start: 310px;
             font-family: sans-serif;
             margin-bottom: -20px;
-            background: linear-gradient(135deg, #c3c3c3, rgba(100, 104, 105, 0.703));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: rgba(255, 255, 255, 0.692);
             padding: 40px;
             font-size: 30px;
             font-weight: bolder;
             transition:  0.5s ease;
             box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.237);
-            animation: rotate-shadow 5s linear infinite;
+            transition: 0.5s ease;
         }
         .content li:hover{
-            border-radius: 20px;
-            transition: 2s;
+            transition: 0.5s ease;
             margin-bottom: -20px;
+            padding: 30px;
+            padding-inline: 40px;
             font-size: 28px;
+            color: white;
             cursor: pointer;
+            box-shadow: 1px 1px 10px 2px rgba(105, 105, 105, 0.174);
+            border-radius: 30px;
+            background: #b7b7b721;
         }
         .portfolio-toggle{
             position: relative;
@@ -146,6 +156,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             font-size: 22px;
+            transition: 0.5s ease;
         }
         .content li:hover #c-h-1{
             font-size: 26px;
@@ -181,21 +192,21 @@
         }
 
         .modal-content {
-            background-color: #1b1b1b;
+            background-color: #646464;
             margin: 15% auto;
             padding: 20px;
+            padding-top: 40px;
             border: 0px solid #888;
-            width: 25%;
+            width: 18%;
             border: 0px solid orange;
             max-width: 500px;
-            border-radius: 10px;
+            border-radius: 10%;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
             position: relative;
             animation: slidein 0.5s forwards;
-            animation: rotate-shadow-signinModa 10s linear infinite;
             color:white;
             font-family:sans-serif;
-
+            transition: 0.3s ease-out;
         }
 
         .close-button {
@@ -207,11 +218,12 @@
             opacity:0.5;
             margin-top:-10px;
             margin-right:-5px;
+            margin-top: -33px;
         }
 
         .close-button:hover,
         .close-button:focus {
-            color: red;
+            color: rgb(0, 0, 0);
             text-decoration: none;
             cursor: pointer;
         }
@@ -229,22 +241,28 @@
         input[type="text"],
         input[type="email"],
         input[type="password"] {
-            background-color: #000000;
-            padding: 10px;
+            background-color: #00000000;
+            padding: 3px;
+            padding-top: 5x;
             margin-bottom: 20px;
             border: 0px solid #ccc;
-            border-radius: 5px;
+            border-radius: 0px;
+            font-size: 18px;
             transition: background-color 0.3s, box-shadow 0.3s;
-            animation: rotate-shadow 10s linear infinite
+            border-bottom: 2px solid rgb(136, 184, 89);
         }
 
         input[type="text"]:focus,
         input[type="email"]:focus,
         input[type="password"]:focus {
-            background-color: black;
+            background-color: rgba(0, 0, 0, 0.0);
             color: white;
-            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0);
             outline: none;
+        }
+        #submit-space{
+            display: flex;
+            justify-content:center;
         }
 
         input[type="submit"] {
@@ -254,6 +272,7 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            width: 33%;
             font-size: 16px;
             transition: background-color 0.3s, box-shadow 0.3s;
         }
@@ -273,63 +292,26 @@
                 transform: translateY(0);
             }
         }
-        @keyframes rotate-shadow {
-            0% {
-                box-shadow: 3px 3px 5px rgba(217, 255, 252, 0.5);
-            }
-            12.5% {
-                box-shadow: 0px 3px 5px rgba(217, 255, 252, 0.5);
-            }
-            25% {
-                box-shadow: -3px 3px 5px rgba(217, 255, 252, 0.5);
-            }
-            37.5% {
-                box-shadow: -3px 0px 5px rgba(217, 255, 252, 0.5);
-            }
-            50% {
-                box-shadow: -3px -3px 5px rgba(217, 255, 252, 0.5);
-            }
-            62.5% {
-                box-shadow: 0px -3px 5px rgba(217, 255, 252, 0.5);
-            }
-            75% {
-                box-shadow: 3px -3px 5px rgba(217, 255, 252, 0.5);
-            }
-            87.5% {
-                box-shadow: 3px 0px 5px rgba(217, 255, 252, 0.5);
-            }
-            100% {
-                box-shadow: 3px 3px 5px rgba(217, 255, 252, 0.5);
-            }
+
+        footer{
+            margin-top: -200px;
+            height: 30vh;
+            background: #4b52527b;
+            display:flex;
+            justify-content: center;
+            align-items:baseline;
         }
-        @keyframes rotate-shadow-signinModal{
-            0% {
-                box-shadow: 3px 3px 5px rgba(34, 243, 191, 0.5);
-            }
-            12.5% {
-                box-shadow: 0px 3px 5px rgba(34, 243, 191, 0.5);
-            }
-            25% {
-                box-shadow: -3px 3px 5px rgba(34, 243, 191, 0.5);
-            }
-            37.5% {
-                box-shadow: -3px 0px 5px rgba(34, 243, 191, 0.5);
-            }
-            50% {
-                box-shadow: -3px -3px 5px rgba(34, 243, 191, 0.5);
-            }
-            62.5% {
-                box-shadow: 0px -3px 5px rgba(34, 243, 191, 0.5)
-            }
-            75% {
-                box-shadow: 3px -3px 5px rgba(34, 243, 191, 0.5);
-            }
-            87.5% {
-                box-shadow: 3px 0px 5px rgba(34, 243, 191, 0.5);
-            }
-            100% {
-                box-shadow: 3px 3px 5px rgba(34, 243, 191, 0.5);
-            }
+        footer li{
+            list-style: none;
+            font-family: sans-serif;
+            color: rgba(255, 255, 255, 0.737);
+            padding-top:25px;
+            padding-inline-start:10px;
+            cursor: pointer;
+
+        }
+        footer li span{
+            color: rgba(255, 255, 255, 0.228);
         }
  
     </style>
@@ -338,7 +320,6 @@
     <a href="index.html" id="logo" onclick="goToHomePage()"><img src="{{ url_for('static', filename='images/Stock Savvy.png') }}" width="80px" alt=""></a>
     <a href="#" class="active" onclick="goToHomePage()" id="home">Home</a>
     <a href="#">About</a>
-    <a href="#" onclick="opencontact()">Contact</a>
     <a href="#"><div class="sigin" onclick="toggleModal() ">Signin</div></a>
     <a href="#"><div class="username">{{name}}</div></a>
 </div>
@@ -353,7 +334,9 @@
             <input type="email" id="email" name="email" required><br>
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required><br>
-            <input type="submit" value="Submit">
+            <div id="submit-space">
+                <input type="submit" value="Submit">
+            </div>
         </form>
     </div>
 </div>
@@ -375,8 +358,15 @@
         </li>
 </nav>
 </div>
+<footer>
+    <li><span>&copy; 2022 Stock Savvy</span></li>
+    <li>Contact</li>
+    <li><span>|</span></li>
+    <li>Email</li>
+</footer>
 <body>
     <script>
+        
         
         function goToHomePage() {
             window.location.href = "/";
