@@ -49,9 +49,10 @@
             border-top-right-radius:1px ;
             border-bottom-right-radius:1px ;
             width: 15%;
-            height: 130vh;
+            height:200vh;
             float: left;
             padding: 30px;
+            padding-inline-start:-10px;
             background: rgb(60, 60, 60, 0.6);
             position: absolute;
             transition: left 0.3s ease;
@@ -81,7 +82,7 @@
             transition: transform 0.3s ease;
         }
         #menu-toggle.rotate {
-            transform: rotate(360deg);
+            transform: rotate(180deg);
         }
         #stockForm {
             background-color: #ffffff00;
@@ -91,6 +92,7 @@
             margin-inline-start: -15px;
             text-align: center;
             display: flex;
+            padding-bottom:20px;
         }
         #symbolInput {
             width: 150px;
@@ -125,7 +127,6 @@
         button[type="submit"]:hover {
             background-color: #0056b3;
         }
-
         #stockName{
             font-family: sans-serif;
             font-size: 60px;
@@ -138,7 +139,7 @@
         #plotDiv{
             font-family: sans-serif;
             margin-left:-10%;
-            margin-top:0.5%;
+            margin-top:0.9%;
             transition: margin-left 0.3s ease;
             width:90%;
         }
@@ -170,6 +171,7 @@
             height:100px;
             
         }
+
         #details-1{
             border:1px solid white;
             width:25%;
@@ -178,44 +180,24 @@
             transition: linear 0.1s;
             margin-inline-start:480px;
         }
-        @keyframes rotate-shadow {
-            0% {
-                box-shadow: 3px 3px 5px rgba(128, 128, 128, 0.5);
-            }
-            12.5% {
-                box-shadow: 0px 3px 5px rgba(128, 128, 128, 0.5);
-            }
-            25% {
-                box-shadow: -3px 3px 5px rgba(128, 128, 128, 0.5);
-            }
-            37.5% {
-                box-shadow: -3px 0px 5px rgba(128, 128, 128, 0.5);
-            }
-            50% {
-                box-shadow: -3px -3px 5px rgba(128, 128, 128, 0.5);
-            }
-            62.5% {
-                box-shadow: 0px -3px 5px rgba(128, 128, 128, 0.5);
-            }
-            75% {
-                box-shadow: 3px -3px 5px rgba(128, 128, 128, 0.5);
-            }
-            87.5% {
-                box-shadow: 3px 0px 5px rgba(128, 128, 128, 0.5);
-            }
-            100% {
-                box-shadow: 3px 3px 5px rgba(128, 128, 128, 0.5);
-            }
-        }
+
         #symbolList{
             margin-inline-start:-30px;
             width:100%;
             background: linear-gradient(100deg, #c8c8c8,#787878);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            
         }
+        #symbolList li span{
+            display:none;
+        }
+        #stock-details-container{
+            margin-top:-39%;
+        }
+
         .stock-details{
-            margin-top:36%;
+            margin-top:40%;
             display: inline-flex;
             font-family:sans-serif;
             transition: linear 0.3s;
@@ -232,7 +214,7 @@
             -webkit-text-fill-color: transparent;
         }
         .stock-details2{
-            margin-top:47%;
+            margin-top:52%;
             display: inline-flex;
             font-family:sans-serif;
             transition: linear 0.3s;
@@ -248,79 +230,223 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        #search{
-            float:left;
-            margin-left:-35px;
+        #list-items{
+            cursor:pointer;
+            width:100%;
+            overflow-y:scroll;
+            overflow-x:hidden;
+            scrollbar-color:gray transparent;
+            scrollbar-width:thin;
+            height:193vh;
         }
+        #list-items li{
+            margin-left:-20px
+        }
+        .duration-options{
+            display: flex;
+            width: max-content;
+            padding-inline: 20px;
+            border-radius: 20px;
+            background: linear-gradient(45deg, gray, rgba(192, 192, 192, 0.674));
+            color: rgb(244, 244, 244);
+            margin-inline-start: 265px;
+            margin-top: 45%;
+            position: sticky;
+            opacity: 0;
+            transition: linear 0.3s;
+        }
+        .duration-options li{
+            list-style: none;
+            font-family:sans-serif;
+        }
+        .duration-options li button{
+            background: #ffffff00;
+            border: 0px solid black;
+            padding-inline: 20px;
+            box-shadow: 0px 0px 1px 0px white;
+            height: 22px;
+        }
+        .duration-options li button:hover{
+            transition: 0.2s ease;
+            background:  rgba(192, 192, 192, 0.5);
+            color:white;
+            border: none;
+        }
+        #day-1{
+            box-shadow: none;
+            padding-left:20px;
+        }
+
     </style>
 </head>
 <body>
     <div class="navbar">
-        <a href="#" id="menu-toggle"><img src="{{ url_for('static', filename='images/search.svg') }}" alt="#"></a>
-        <a href="#" id="search">Search</a>
+        <a href="#" id="menu-toggle"><img src="{{ url_for('static', filename='images/arrow-f.svg') }}" alt="#"></a>
         <a href="#" onclick="opencontact()">Contact</a>
         <a href="#">About</a>
         <a href="#" class="active" onclick="goToHomePage()">Home</a>
         <a href="#" class="settings-wheel" onclick="openhomelight()"><img src="theme.png" width="17" alt=""></a>
     </div>
-    
     <div class="side-bar" id="side-bar">
         <form id="stockForm">
             <label for="symbol"></label>
             <input type="text" id="symbolInput" placeholder="Enter stock name" required>
             <button type="submit">Get Data</button>
+            <input type="hidden" id="selectedDuration" name="duration" value="1y">
         </form>
+        <div id="list-items">
         <ul id="symbolList">
-            <li>AAPL</li>
-            <li>GOOG</li>
-            <li>NKE</li>
-            <li>DIS</li>
-            <li>SBUX</li>
-            <li>DMART.NS</li>
-            <li>MSFT</li>
-            <li>TSLA</li>
-            <li>AMZN</li>
-            <li>FB</li>
-            <li>JPM</li>
-            <li>V</li>
-            <li>JNJ</li>
-            <li>WMT</li>
-            <li>PFE</li>
-            <li>BABA</li>
-            <li>INTC</li>
-            <li>CSCO</li>
+                {%for key, value in stock_dict.items()%}
+                    <li>{{key}}<span>{{value}}</span></li>
+                {% endfor %}    
+            </div>         
         </ul>
     </div>
     <h1 id="stockName">Stock</h1>
     <div id="plotDiv"></div>
-    <div class="stock-details" id="stock-details">
-        <a href="#" id="price-details"><h1 id="price-h1">Price</h1><div id="latestPriceDiv"></div></a>
-        <a href="#" id="pe-details"><h1 id="pe-h1">P/E Ratio</h1><div id="peDiv"></div></a>
-    </div>
-    <div class="stock-details2" id="stock-details2">
-        <a href="#" id="price-details"><h1 id="price-h1">Open</h1><div id="open_price"></div></a>
-        <a href="#" id="h-details"><h1 id="hight-h1">High</h1><div id="highest_priceDiv"></div></a>
+    <label for="duration"></label>
+        <ul class="duration-options" id="duration-options">
+            <li><button type="button" onclick="setDuration('1d')" id="duration1d">1 Day</button></li>
+            <li><button type="button" onclick="setDuration('5d')" id="duration5d">5 Days</button></li>
+            <li><button type="button" onclick="setDuration('1mo')" id="duration1mo">1 Month</button></li>
+            <li><button type="button" onclick="setDuration('3mo')" id="duration3mo">3 Months</button></li>
+            <li><button type="button" onclick="setDuration('6mo')" id="duration6mo">6 Months</button></li>
+            <li><button type="button" onclick="setDuration('1y')" id="duration1y" class="selected">1 Year</button></li>
+            <li><button type="button" onclick="setDuration('2y')" id="duration2y">2 Years</button></li>
+            <li><button type="button" onclick="setDuration('5y')" id="duration5y">5 Years</button></li>
+            <li><button type="button" onclick="setDuration('max')" id="durationmax">Max</button></li>
+        </ul>
+    <div id="stock-details-container">
+        <div class="stock-details" id="stock-details">
+            <a href="#" id="price-details"><h1 id="price-h1">Price</h1><div id="latestPriceDiv"></div></a>
+            <a href="#" id="pe-details"><h1 id="pe-h1">P/E Ratio</h1><div id="peDiv"></div></a>
+        </div>
+        <div class="stock-details2" id="stock-details2">
+            <a href="#" id="price-details"><h1 id="price-h1">Open</h1><div id="open_price"></div></a>
+            <a href="#" id="h-details"><h1 id="hight-h1">High</h1><div id="highest_priceDiv"></div></a>
+        </div>
     </div>
     <script>
+
+        function submitForm() {
+            var symbol = document.getElementById('symbolInput').value.toUpperCase();
+            var duration = document.getElementById('selectedDuration').value;
+            
+            // Example AJAX using fetch API
+            fetch('/plot?symbol=' + symbol + '&duration=' + duration)
+                .then(response => response.json())
+                .then(data => {
+                    // Assuming data contains updated graph information
+                    console.log('Received data:', data);
+                    // Update graph here (example code)
+                    // Replace with your actual code to update the graph
+                    alert('Received data for ' + duration + ': ' + JSON.stringify(data));
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                });
+        }
+        document.addEventListener("DOMContentLoaded", function() {
+            loadGraph('1y'); // Load 1-year data by default
+        });
+
+        function selectStock(symbol) {
+            document.getElementById('symbolInput').value = symbol;
+            loadGraph('1y'); // Load 1-year data by default when a stock is selected
+        }
+
+        function setDuration(duration) {
+            document.getElementById('selectedDuration').value = duration;
+            // Optionally, change button styles for selected duration
+            document.querySelectorAll('.duration-options button').forEach(function(btn) {
+                btn.classList.remove('selected');
+            });
+            document.getElementById('duration' + duration).classList.add('selected');
+            
+            // Update the graph with the selected duration
+            loadGraph(duration);
+        }
+
+        function loadGraph(duration) {
+            var symbol = document.getElementById('symbolInput').value.toUpperCase();
+            if (!symbol) {
+                return;
+            }
+
+            // Example AJAX using fetch API
+            fetch(`/plot?symbol=${symbol}&duration=${duration}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Assuming data contains updated graph information
+                        console.log('Received data:', data);
+                        updateGraph(data);
+                    } else {
+                        alert('Error fetching stock data: ' + data.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                });
+        }
+
+        function updateGraph(data) {
+            // Replace this with your actual code to update the graph
+            // Example code to demonstrate updating the graph
+            var graphContainer = document.getElementById('plotDiv');
+            // Add more code to render the graph using the dates and prices from the data
+        }
+
+        document.getElementById('symbolInput').addEventListener('input', function() {
+            
+            var input = this.value.trim().toUpperCase();
+            var list = document.getElementById('symbolList');
+            var items = Array.from(list.getElementsByTagName('li'));
+        
+            // Sort items based on relevance to input
+            items.sort(function(a, b) {
+                var aText = a.textContent.toUpperCase();
+                var bText = b.textContent.toUpperCase();
+                
+                // Calculate relevance
+                var aIndex = aText.indexOf(input);
+                var bIndex = bText.indexOf(input);
+        
+                // If both items contain the input, sort by the index of the match
+                if (aIndex !== -1 && bIndex !== -1) {
+                    return aIndex - bIndex;
+                }
+                // If only one item contains the input, it should come first
+                if (aIndex !== -1) return -1;
+                if (bIndex !== -1) return 1;
+                // If neither item contains the input, maintain original order
+                return aText.localeCompare(bText);
+            });
+        
+            // Clear the current list and append sorted items
+            list.innerHTML = '';
+            items.forEach(function(item) {
+                list.appendChild(item);
+            });
+        });
 
         function goToHomePage() {
             window.location.href = "/";
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
-            const symbolInput = document.getElementById('symbolInput');
-            const symbolList = document.getElementById('symbolList').getElementsByTagName('li');
-            
-            // Function to set input value when list item is clicked
-            function setSymbolInputValue(event) {
-                const clickedSymbol = event.target.textContent;
-                symbolInput.value = clickedSymbol;
+        document.addEventListener("DOMContentLoaded", function() {
+            // Function to fill input when a list item is clicked
+            function fillInput(value) {
+                document.getElementById('symbolInput').value = value;
             }
-            
-            // Add click event listener to each list item
-            for (let i = 0; i < symbolList.length; i++) {
-                symbolList[i].addEventListener('click', setSymbolInputValue);
-            }
+
+            // Adding event listeners to the list items
+            document.querySelectorAll('#symbolList li').forEach(function(item) {
+                item.addEventListener('click', function() {
+                    var value = item.querySelector('span').textContent;
+                    fillInput(value);
+                });
+            });
         });
 
         document.getElementById("stockForm").addEventListener("submit", function(event) {
@@ -340,15 +466,18 @@
             const menuToggle = document.getElementById('menu-toggle');
             const sideBar = document.getElementById('side-bar');
             const heading2 = document.getElementById('stockName');
+            
             const graph = document.getElementById('plotDiv');
             const toggle = document.getElementById('menu-toggle');
             const details = document.getElementById('stock-details');
             const details2 = document.getElementById('stock-details2');
+            const duration_options = document.getElementById('duration-options')
 
             menuToggle.addEventListener('click', function(event) {
                 event.preventDefault();
                 sideBar.classList.toggle('open');
                 menuToggle.classList.toggle('rotate');
+
 
                 if (sideBar.classList.contains('open')) {
                     details.style.marginLeft = '20%'
@@ -357,6 +486,8 @@
                     graph.style.marginLeft = '20%';
                     graph.style.width = '80%';
                     toggle.style.color='orange';
+                    duration_options.style.opacity = "1";
+                    duration_options.style.marginInlineStart = "570px";
                     
                 } else {
                     details.style.marginLeft = '10%';
@@ -365,6 +496,7 @@
                     graph.style.marginLeft = '10%';
                     graph.style.width = '80%';
                     toggle.style.color='white';
+                    duration_options.style.marginInlineStart = "380px";
                 }
             });
         });
