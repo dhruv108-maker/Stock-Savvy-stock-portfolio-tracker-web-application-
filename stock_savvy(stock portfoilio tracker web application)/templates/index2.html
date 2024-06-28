@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stock Plotter</title>
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <title>Portfolio</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
     <link rel="stylesheet" href="style.css">
     <style>
         body {
@@ -24,6 +24,8 @@
             overflow: hidden;
             width: 100%;
             z-index: 999;
+            position: sticky;
+            top: 0;
         }
         .navbar a {
             margin-inline:10px;
@@ -52,6 +54,7 @@
             height:200vh;
             float: left;
             padding: 30px;
+            padding-bottom:0px;
             padding-inline-start:-10px;
             background: rgb(60, 60, 60, 0.6);
             position: absolute;
@@ -245,15 +248,16 @@
         .duration-options{
             display: flex;
             width: max-content;
-            padding-inline: 20px;
+            padding-inline: 1px;
             border-radius: 20px;
             background: linear-gradient(45deg, gray, rgba(192, 192, 192, 0.674));
             color: rgb(244, 244, 244);
-            margin-inline-start: 265px;
+            margin-inline-start: 280px;
             margin-top: 45%;
             position: sticky;
             opacity: 0;
             transition: linear 0.3s;
+            overflow:hidden;
         }
         .duration-options li{
             list-style: none;
@@ -262,8 +266,8 @@
         .duration-options li button{
             background: #ffffff00;
             border: 0px solid black;
-            padding-inline: 20px;
-            box-shadow: 0px 0px 1px 0px white;
+            padding-inline:38px;
+            box-shadow: 0px 0px 1px 0px rgba(255, 255, 255, 0);
             height: 22px;
         }
         .duration-options li button:hover{
@@ -272,10 +276,41 @@
             color:white;
             border: none;
         }
-        #day-1{
-            box-shadow: none;
-            padding-left:20px;
+        
+        #details{
+            margin-top: -20px;
+            display: flex;
+            width: 70%;
+            height: 200px;
+            margin-inline-start: 450px;
+            justify-items: center;
+            flex-direction: row;
+            transition:0.3s ease;
+            flex-wrap: wrap; /* Allow wrapping to the next line */
+            gap: 20px; 
         }
+
+        #details li{
+            background: linear-gradient(45deg, rgb(222, 222, 222), rgb(143, 143, 143));
+            -webkit-background-clip:text;
+            color: transparent;
+            border: 0px solid white;
+            list-style: none;
+            text-align: start;
+            flex: 1 1 calc(50% - 10px); 
+            box-sizing: border-box;
+            font-weight: bolder;
+        }
+
+        #details li label{
+            background: linear-gradient(45deg, rgb(222, 222, 222), rgb(143, 143, 143));
+            -webkit-background-clip:text;
+            color: transparent;
+            font-size: 24px;
+            font-family: sans-serif;
+            font-weight: bolder;
+            padding-right: 12px;
+        }        
 
     </style>
 </head>
@@ -316,23 +351,22 @@
             <li><button type="button" onclick="setDuration('5y')" id="duration5y">5 Years</button></li>
             <li><button type="button" onclick="setDuration('max')" id="durationmax">Max</button></li>
         </ul>
-    <div id="stock-details-container">
-        <div class="stock-details" id="stock-details">
-            <a href="#" id="price-details"><h1 id="price-h1">Price</h1><div id="latestPriceDiv"></div></a>
-            <a href="#" id="pe-details"><h1 id="pe-h1">P/E Ratio</h1><div id="peDiv"></div></a>
-        </div>
-        <div class="stock-details2" id="stock-details2">
-            <a href="#" id="price-details"><h1 id="price-h1">Open</h1><div id="open_price"></div></a>
-            <a href="#" id="h-details"><h1 id="hight-h1">High</h1><div id="highest_priceDiv"></div></a>
-        </div>
-    </div>
+        
+        <section id="details">
+            <li id="latestPriceDiv"><label for="current-price">Current Price</label>{{latest_price}}</li>
+            <li id="open_price"><label for="open-price">Open</label>{{open_price}}</li>
+            <li id="peDiv"><label for="market-cap">PE</label>{{peRatio}}</li>
+            <li id="highest_priceDiv"><label for="high-price">High</label>{{highest_price}}</li>
+            <li id="newsDiv"><label for="news-box-1">news 1</label></li>
+            <li id=""><label for="news-box-2">news 2</label>{{news}}</li>
+        </section>
     <script>
 
         function submitForm() {
             var symbol = document.getElementById('symbolInput').value.toUpperCase();
             var duration = document.getElementById('selectedDuration').value;
             
-            // Example AJAX using fetch API
+            //AJAX using fetch API
             fetch('/plot?symbol=' + symbol + '&duration=' + duration)
                 .then(response => response.json())
                 .then(data => {
@@ -466,12 +500,11 @@
             const menuToggle = document.getElementById('menu-toggle');
             const sideBar = document.getElementById('side-bar');
             const heading2 = document.getElementById('stockName');
-            
             const graph = document.getElementById('plotDiv');
             const toggle = document.getElementById('menu-toggle');
-            const details = document.getElementById('stock-details');
-            const details2 = document.getElementById('stock-details2');
+            const details = document.getElementById('details');
             const duration_options = document.getElementById('duration-options')
+            const hight_h1 = document.getElementById('hight-h1');
 
             menuToggle.addEventListener('click', function(event) {
                 event.preventDefault();
@@ -480,99 +513,162 @@
 
 
                 if (sideBar.classList.contains('open')) {
-                    details.style.marginLeft = '20%'
-                    details2.style.marginLeft = '20%'
+                    details.style.marginLeft = '36%'
                     heading2.style.marginLeft = '20%';
+                    details.style.fontSize = '24px'
                     graph.style.marginLeft = '20%';
                     graph.style.width = '80%';
                     toggle.style.color='orange';
                     duration_options.style.opacity = "1";
-                    duration_options.style.marginInlineStart = "570px";
+                    duration_options.style.marginInlineStart = "450px";
+                    details.style.marginTop = '82px';
+                    details.style.fontFamily = 'sans-serif';
+
                     
                 } else {
-                    details.style.marginLeft = '10%';
-                    details2.style.marginLeft = '10%';
+                    details.style.marginLeft = '25%';
                     heading2.style.marginLeft = '3%';
                     graph.style.marginLeft = '10%';
                     graph.style.width = '80%';
                     toggle.style.color='white';
-                    duration_options.style.marginInlineStart = "380px";
+                    duration_options.style.marginInlineStart = "300px";
                 }
             });
         });
 
-        function plotStock() {
+        function plotStock(duration = '1y') {
             var symbol = document.getElementById('symbolInput').value.toUpperCase();
-            fetch('/plot?symbol=' + symbol)
+            fetch(`/plot?symbol=${symbol}&duration=${duration}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
                         var latestPrice = data.latest_price;
-                        console.log("Latest price:", latestPrice);
-                        var latestPriceDiv = document.getElementById('latestPriceDiv');
-                        latestPriceDiv.textContent = 'Latest Price: INR ' + latestPrice;
-                        latestPriceDiv.classList.add('active');
-                        var dates = data.dates;
-                        var prices = data.prices;
-
+                        document.getElementById('latestPriceDiv').textContent = 'Latest Price: $ ' + latestPrice;
+        
                         var peRatio = data.pe;
-                        console.log("P/E Ratio:", peRatio);
-                        var peDiv = document.getElementById('peDiv');
-                        peDiv.textContent = "P/E Ratio: " + peRatio;
-                        peDiv.classList.add('active');
-                        
+                        document.getElementById('peDiv').textContent = "P/E Ratio: " + peRatio;
+        
                         var highest_price = data.highest_price;
-                        console.log("Highest Price:", highest_price);
-                        var highest_priceDiv = document.getElementById('highest_priceDiv');
-                        highest_priceDiv.textContent = "High: INR " + highest_price;
-                        highest_priceDiv.classList.add('active');
-                        highest_priceDiv.style.marginLeft = "100px";
-                        var h_heading=document.getElementById('hight-h1')
-                        highest_priceDiv.style.marginLeft = "100px";
-                        h_heading.style.marginLeft = "100px";
-
+                        document.getElementById('highest_priceDiv').textContent = "High: $ " + highest_price;
+        
                         var open_price = data.open_price;
-                        console.log("Open:", open_price);
-                        var peDiv = document.getElementById('open_price');
-                        peDiv.textContent = "Open: " + open_price;
-                        peDiv.classList.add('active');
+                        document.getElementById('open_price').textContent = "Open: " + open_price;
 
+                        var avg_price = data.compare_price;
+                        var lineColor = avg_price <= latestPrice ? 'rgb(10, 255, 100)' : 'rgb(255, 0, 0)';
+                        var areaGradient = lineColor === 'rgb(10, 255, 100)' ?
+                            [{
+                                offset: 0,
+                                color: 'rgba(0, 255, 0, 0.5)'
+                            }, {
+                                offset: 1,
+                                color: 'rgba(0, 255, 0, 0.1)'
+                            }] :
+                            [{
+                                offset: 0,
+                                color: 'rgba(255, 0, 0, 0.5)'
+                            }, {
+                                offset: 1,
+                                color: 'rgba(255, 0, 0, 0.1)'
+                            }];
+        
                         var dates = data.dates;
                         var prices = data.prices;
-                        var layout = {
-                            title: '',
-                            xaxis: {
-                                title: 'Date',
-                                tickformat: '%Y-%m-%d'
+        
+                        var chartDom = document.getElementById('plotDiv');
+                        var myChart = echarts.init(chartDom);
+                        var option = {
+                            xAxis: {
+                                type: 'category',
+                                data: dates,
+                                axisLabel: {
+                                    color: 'white'
+                                }
                             },
-                            yaxis: {
-                                title: 'Price',
-                                tickprefix: '$'
+                            yAxis: {
+                                type: 'value',
+                                axisLabel: {
+                                    color: 'white'
+                                }
                             },
-                            font: {
-                                family: 'Arial, sans-serif',
-                                size: 16,
-                                color: 'white 0.9'
+                            tooltip: {
+                                trigger: 'axis', // Show tooltip on hovering over axis
+                                backgroundColor: 'silver', // Background color
+                                borderColor: 'gray', // Border color
+                                borderWidth: 1, // Border width
+                                padding: [0, 30], // Padding inside tooltip
+                                textStyle: { // Text style for tooltip content
+                                    color: 'black', // Text color
+                                    fontSize: 14, // Font size
+                                },
+                                formatter: function (params) {
+                                    var date = params[0].axisValue; // Date from x-axis
+                                    var price = params[0].value.toFixed(2); // Formatted price
+                                    return `
+                                        <div style="text-align: left;">
+                                            <p>Price: ${price}</p>
+                                        </div>
+                                    `;
+                                },
+                                axisPointer: {
+                                    type: 'line', // Line type pointer
+                                    animation: true, // Enable animation
+                                    lineStyle: {
+                                        color: 'rgb(64, 138, 222)', // Pointer line color
+                                        width: 2, // Pointer line width
+                                        type: 'solid' // Pointer line style
+                                    }
+                                }
                             },
-                            plot_bgcolor: 'black',
-                            paper_bgcolor: 'black '
+                            series: [{
+                                data: prices,
+                                type: 'line',
+                                lineStyle: {
+                                    color: lineColor
+                                },
+                                areaStyle: {
+                                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, areaGradient)
+                                }
+                            }],
+                            textStyle: {
+                                color: 'white'
+                            },
+                            backgroundColor: 'black'
                         };
-                        var trace = {
-                            x: dates,
-                            y: prices,
-                            type: 'scatter',
-                            mode: 'lines',
-                            line: {
-                                color: 'rgb(10, 255, 100,1)',
-                                width: 1
-                            }
-                        };
-                        Plotly.newPlot('plotDiv', [trace], layout);
+        
+                        myChart.setOption(option);
                     } else {
                         alert(data.error);
                     }
                 })
                 .catch(error => console.error('Error:', error));
+        }
+        
+        document.addEventListener("DOMContentLoaded", function() {
+            // Function to fill input when a list item is clicked
+            function selectStock(value) {
+                document.getElementById('symbolInput').value = value;
+                plotStock(); // Plot stock data with the default duration
+            }
+
+            // Adding event listeners to the list items
+            document.querySelectorAll('#stockList li').forEach(function(item) {
+                item.addEventListener('click', function() {
+                    var value = item.querySelector('span').textContent;
+                    selectStock(value);
+                });
+            });
+        });
+
+        function setDuration(duration) {
+            document.getElementById('selectedDuration').value = duration;
+            plotStock(duration); // Plot stock data with the selected duration
+
+            // Optionally, change button styles for selected duration
+            document.querySelectorAll('.duration-options button').forEach(function(btn) {
+                btn.classList.remove('selected');
+            });
+            document.getElementById('duration' + duration).classList.add('selected');
         }
 
         function fetchLatestPrice() {
