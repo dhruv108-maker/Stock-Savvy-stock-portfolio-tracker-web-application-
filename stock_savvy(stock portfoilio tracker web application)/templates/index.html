@@ -12,7 +12,7 @@
             padding: 0;
         }
         #logo{
-            float: inline-start;
+            float: left;
             position: absolute;
             margin-top: 5px;
             margin-inline-start:-1px;
@@ -22,7 +22,8 @@
             overflow: hidden;
             width: 100%;
             z-index: 999;
-            position: fixed;
+            position: sticky;
+            top:0;
         }
         .navbar a {
             margin-inline:10px;
@@ -78,6 +79,7 @@
         h1:hover{
             cursor:default;
         }
+        
         h2{ margin-inline-start: 20px;
             font-family: sans-serif;
             font-size: 80px;
@@ -313,6 +315,11 @@
         footer li span{
             color: rgba(255, 255, 255, 0.228);
         }
+        .main-body{
+            background-image: url("{{ url_for('static', filename='images/main2.png') }}");
+            background-size:cover ;
+            background-position-y: -200px;
+        }
  
     </style>
 </head>
@@ -402,6 +409,7 @@
                 userForm.reset();
             });
         });
+        
     </script>
 </body>
 </html>
